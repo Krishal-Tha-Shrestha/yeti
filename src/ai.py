@@ -1,4 +1,12 @@
 import os
+import datetime
+
+LOG_FILE = "conversation_log.txt"
+
+def save_to_log(role, message):
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(f"[{timestamp}] {role}: {message}\n")
 from groq import Groq
 from dotenv import load_dotenv
 
@@ -39,11 +47,14 @@ You are inspired by Jarvis from Iron Man.
   Keep thinking to 1-2 sentences max, directly relevant to the question
 - After thinking, give your actual response normally
 - Never be verbose or repeat yourself
+- Never use asterisk actions like *checks logs* or *simulation error*
+- Never roleplay physical actions, just respond directly
 """
 
 history = []
 
 def chat(user_input):
+    save_to_log("You", user_input)
     history.append({
         "role": "user",
         "content": user_input
@@ -67,5 +78,5 @@ def chat(user_input):
     if len(history) > 10:
         history.pop(0)
         history.pop(0)
-
+    save_to_log("Yeti",reply)
     return reply
