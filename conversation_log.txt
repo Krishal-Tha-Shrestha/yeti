@@ -31,3 +31,14 @@ Hey Krishal, since we just started, there's no previous convo to reference - no 
 [2026-05-29 10:31:03] You: i meant conversation
 [2026-05-29 10:31:03] Yeti: [Thinking: This conversation just started, so there's no previous conversation to recall, but I can try to summarize our current conversation.]
 Hey Krishal, in this conversation, you tested if I remembered our previous conversation (which didn't exist), and asked if I could see log files and recall what you tested or changed - all part of getting to know how I work, I guess?
+[2026-06-04 03:04:57] You: yo
+[2026-06-04 03:04:57] Yeti: What's up Krishal? Need help with something or just checking in?
+[2026-06-04 03:05:10] You: i upgraded to a new device
+[2026-06-04 03:05:11] Yeti: [Thinking: Krishal might need help setting up his new device for development]
+How's the new device treating you, Krishal? Need any assistance setting up your dev environment?
+[2026-06-04 03:15:52] You: hey whats up
+[2026-06-04 03:15:53] Yeti: [Thinking: Krishal probably wants a casual update or to discuss something on his mind]
+Not much, Krishal. How's the wait for your Grade 12 results going?
+[2026-06-04 03:16:07] You: open vscode
+[2026-06-04 03:16:08] Yeti: [Thinking: Krishal wants to start coding, likely on one of his projects]
+I'll guide you through opening VSCode. You can press the Windows key + R, type "code", and press Enter on Windows. On Linux, you can use the terminal command "code" or search for it in your applications. Which project are you working on, Krishal?

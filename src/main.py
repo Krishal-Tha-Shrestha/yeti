@@ -4,6 +4,8 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.ai import chat
+from src.commands.router import handle_command
+from src.improver import get_improvements_summary, load_improvements
 
 def main():
     print("=" * 40)
@@ -11,6 +13,12 @@ def main():
     print("  Type 'quit' to exit")
     print("=" * 40)
     print()
+
+    improvements = load_improvements()
+    if improvements:
+        print(f"  {len(improvements)} improvement(s) active")
+        print("=" * 40)
+        print()
 
     while True:
         try:
@@ -24,8 +32,12 @@ def main():
                 break
 
             print("Yeti: ", end="", flush=True)
-            response = chat(user_input)
-            print(response)
+
+            if not handle_command(user_input):
+                response = chat(user_input)
+                print(response)
+            else:
+                print("Done!")
             print()
 
         except KeyboardInterrupt:
