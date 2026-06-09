@@ -1,70 +1,51 @@
 import subprocess
 import webbrowser
 import datetime
-
 from src.commands.search import web_search
 
 COMMAND_TRIGGERS = {
-    "open chrome": lambda: webbrowser.open("https://google.com"),
-    "open youtube": lambda: webbrowser.open("https://youtube.com"),
-    "open github": lambda: webbrowser.open("https://github.com/Krishal-Tha-Shrestha"),
-    "what time is it": lambda: print(f"It's {datetime.datetime.now().strftime('%I:%M %p')}"),
-    "what's the date": lambda: print(f"Today is {datetime.datetime.now().strftime('%B %d, %Y')}"),
-    "open notepad": lambda: subprocess.Popen("notepad.exe"),
-    "open calculator": lambda: subprocess.Popen("calc.exe"),
-    "shutdown": lambda: subprocess.Popen("shutdown /s /t 10"),
-    "cancel shutdown": lambda: subprocess.Popen("shutdown /a"),
-    "open vscode": lambda: subprocess.Popen("code .", shell=True),
+    "open chrome": ("Opening Chrome...", lambda: webbrowser.open("https://google.com")),
+    "open youtube": ("Opening YouTube...", lambda: webbrowser.open("https://youtube.com")),
+    "open github": ("Opening GitHub...", lambda: webbrowser.open("https://github.com/Krishal-Tha-Shrestha")),
+    "open notepad": ("Opening Notepad...", lambda: subprocess.Popen("notepad.exe")),
+    "open calculator": ("Opening Calculator...", lambda: subprocess.Popen("calc.exe")),
+    "open vscode": ("Opening VS Code...", lambda: subprocess.Popen("code .", shell=True)),
+    "shutdown": ("Shutting down in 10 seconds...", lambda: subprocess.Popen("shutdown /s /t 10")),
+    "cancel shutdown": ("Shutdown cancelled.", lambda: subprocess.Popen("shutdown /a")),
 }
 
 def handle_command(user_input):
     lower = user_input.lower().strip()
 
-    # Check keyword commands first
-    for trigger, action in COMMAND_TRIGGERS.items():
+    # Time and date — return directly
+    if "what time is it" in lower:
+        return f"It's {datetime.datetime.now().strftime('%I:%M %p')}"
+
+    if "what's the date" in lower or "what is the date" in lower:
+        return f"Today is {datetime.datetime.now().strftime('%B %d, %Y')}"
+
+    # Keyword commands
+    for trigger, (message, action) in COMMAND_TRIGGERS.items():
         if trigger in lower:
             action()
-            return True
+            return message
 
-    # Web search detection — outside the loop
-    import subprocess
-import webbrowser
-import datetime
-
-from src.commands.search import web_search
-
-COMMAND_TRIGGERS = {
-    "open chrome": lambda: webbrowser.open("https://google.com"),
-    "open youtube": lambda: webbrowser.open("https://youtube.com"),
-    "open github": lambda: webbrowser.open("https://github.com/Krishal-Tha-Shrestha"),
-    "what time is it": lambda: print(f"It's {datetime.datetime.now().strftime('%I:%M %p')}"),
-    "what's the date": lambda: print(f"Today is {datetime.datetime.now().strftime('%B %d, %Y')}"),
-    "open notepad": lambda: subprocess.Popen("notepad.exe"),
-    "open calculator": lambda: subprocess.Popen("calc.exe"),
-    "shutdown": lambda: subprocess.Popen("shutdown /s /t 10"),
-    "cancel shutdown": lambda: subprocess.Popen("shutdown /a"),
-    "open vscode": lambda: subprocess.Popen("code .", shell=True),
-}
-
-def handle_command(user_input):
-    lower = user_input.lower().strip()
-
-    # Check keyword commands first
-    for trigger, action in COMMAND_TRIGGERS.items():
-        if trigger in lower:
-            action()
-            return True
-
-    # Web search detection — outside the loop
+    # Web search
     if lower.startswith("search for ") or lower.startswith("search "):
         query = lower.replace("search for ", "").replace("search ", "")
         raw, output = web_search(query)
-        print(output)
         if raw:
             from src.ai import chat
             summary = chat(f"Based on these search results, give a brief summary:\n{raw}")
-            print(f"Yeti's take: {summary}")
-        return True
+            return f"{output}\n\nYeti's take: {summary}"
+        return output
 
-    return False    
-    return False
+    if lower.startswith("who is ") or lower.startswith("what is "):
+        raw, output = web_search(lower)
+        if raw:
+            from src.ai import chat
+            summary = chat(f"Based on these search results, give a brief summary:\n{raw}")
+            return f"{output}\n\nYeti's take: {summary}"
+        return output
+
+    return None  # not a command

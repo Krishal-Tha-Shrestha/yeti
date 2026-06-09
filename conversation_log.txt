@@ -86,3 +86,405 @@ That's a great goal, Krishal. I'm excited to be a part of your projects and lear
 [2026-06-04 03:40:20] You: bye for now
 [2026-06-04 03:40:21] Yeti: [Thinking: Krishal is signing off for now]
 Later, Krishal! It was great chatting with you. I'll be here when you're ready to work on our AI project or need help with anything else. Have a good one!
+[2026-06-08 22:26:49] You: yo
+[2026-06-08 22:26:49] Yeti: What's up Krishal?
+[2026-06-08 22:27:13] You: i am learning python lets say im begginer of beginner what should i do
+[2026-06-08 22:27:13] Yeti: [Thinking: Krishal's a hands-on learner, so he needs practical steps to get started with Python]
+Hey Krishal, start with basic syntax and data types. Try online resources like Codecademy, W3Schools, or Python.org. Practice with simple projects, like your rock paper scissors game. What specific area of Python do you want to explore first?
+[2026-06-08 22:27:36] You: give me project ideas
+[2026-06-08 22:27:37] Yeti: [Thinking: Krishal loves building projects, so he'll need ideas that are engaging and challenging]
+Krishal, how about: To-Do List App, Quiz Game, Chatbot, Weather Forecast, or a simple Game like Tic-Tac-Toe? These projects cover various concepts like data structures, file handling, and APIs. Which one of these sparks your interest?
+[2026-06-08 22:28:17] You: ok lets built tic-tac-toe give me steps
+[2026-06-08 22:28:18] Yeti: [Thinking: Krishal needs a step-by-step guide to build a Tic-Tac-Toe game in Python]
+Alright Krishal, let's break it down: 
+1. Set up the game board (3x3 grid)
+2. Create functions for player moves and input validation
+3. Implement game logic (check for wins, draws, and valid moves)
+4. Add a main game loop to handle player turns
+5. Test and refine the game
+
+Want me to help with the code for step 1, setting up the game board?
+[2026-06-08 22:29:00] You: yes, do i need to import any modules?
+[2026-06-08 22:29:01] Yeti: [Thinking: Krishal's starting from scratch, so he'll need to know about necessary imports]
+No imports needed for a basic Tic-Tac-Toe game, Krishal. We'll use built-in Python data structures like lists. Let's start with the game board: `board = [' ' for _ in range(9)]`. This creates a 1D list representing our 3x3 grid. Next, we can create a function to print the board in a 3x3 format.
+[2026-06-08 22:29:36] You: next
+[2026-06-08 22:29:37] Yeti: [Thinking: Krishal's got the board set up, now he needs a way to print it]
+Create a function to print the board: 
+```python
+def print_board(board):
+    row1 = '| {} | {} | {} |'.format(board[0], board[1], board[2])
+    row2 = '| {} | {} | {} |'.format(board[3], board[4], board[5])
+    row3 = '| {} | {} | {} |'.format(board[6], board[7], board[8])
+
+    print()
+    print(row1)
+    print(row2)
+    print(row3)
+    print()
+```
+Now, call `print_board(board)` to see the initial board. Next, we can work on handling player moves. Want to create a function for that?
+[2026-06-08 22:32:16] You: next
+[2026-06-08 22:32:17] Yeti: [Thinking: Krishal's got the board printing, now he needs to handle player moves]
+Create a function to handle player moves:
+```python
+def player_move(board, player, move):
+    if board[move] == ' ':
+        board[move] = player
+        return True
+    else:
+        return False
+```
+This function checks if a move is valid (i.e., the space is empty) and updates the board accordingly. We'll also need a way to get the player's move. Let's use `move = int(input("Enter your move (1-9): ")) - 1` to get the move and adjust for 0-based indexing. Next, we can create a main game loop to handle player turns. Want to see how that works?
+[2026-06-08 22:33:26] You: yes
+[2026-06-08 22:33:27] Yeti: [Thinking: Krishal's got the player move function, now he needs a main game loop]
+Create a main game loop:
+```python
+def main():
+    board = [' ' for _ in range(9)]
+    current_player = 'X'
+
+    while True:
+        print_board(board)
+        move = int(input("Player {}, enter your move (1-9): ".format(current_player))) - 1
+        if player_move(board, current_player, move):
+            if check_win(board, current_player):
+                print_board(board)
+                print("Player {} wins!".format(current_player))
+                break
+            current_player = 'O' if current_player == 'X' else 'X'
+        else:
+            print("Invalid move, try again.")
+
+def check_win(board, player):
+    win_conditions = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)]
+    for condition in win_conditions:
+        if board[condition[0]] == board[condition[1]] == board[condition[2]] == player:
+            return True
+    return False
+```
+This loop alternates between players, checks for valid moves, and ends the game when someone wins. Note that I added a `check_win` function to check for winning conditions. Want to run the game now?
+[2026-06-08 22:36:23] You: yes
+[2026-06-08 22:36:24] Yeti: [Thinking: Krishal's got the main game loop, now he can run the game]
+Run the game by calling `main()`. Make sure you have all the functions defined: `print_board`, `player_move`, `main`, and `check_win`. Here's the complete code:
+```python
+def print_board(board):
+    row1 = '| {} | {} | {} |'.format(board[0], board[1], board[2])
+    row2 = '| {} | {} | {} |'.format(board[3], board[4], board[5])
+    row3 = '| {} | {} | {} |'.format(board[6], board[7], board[8])
+
+    print()
+    print(row1)
+    print(row2)
+    print(row3)
+    print()
+
+def player_move(board, player, move):
+    if board[move] == ' ':
+        board[move] = player
+        return True
+    else:
+        return False
+
+def check_win(board, player):
+    win_conditions = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)]
+    for condition in win_conditions:
+        if board[condition[0]] == board[condition[1]] == board[condition[2]] == player:
+            return True
+    return False
+
+def main():
+    board = [' ' for _ in range(9)]
+    current_player = 'X'
+
+    while True:
+        print_board(board)
+        move = int(input("Player {}, enter your move (1-9): ".format(current_player))) - 1
+        if player_move(board, current_player, move):
+            if check_win(board, current_player):
+                print_board(board)
+                print("Player {} wins!".format(current_player))
+                break
+            current_player = 'O' if current_player == 'X' else 'X'
+        else:
+            print("Invalid move, try again.")
+
+main()
+```
+Run this code, and you'll be playing Tic-Tac-Toe! Have fun, Krishal!
+[2026-06-08 22:36:38] You: can you create a file and run it
+[2026-06-08 22:36:40] Yeti: [Thinking: Krishal wants to create and run a file]
+I'll guide you through it. Create a new file called `tictactoe.py` and copy the code into it:
+```python
+def print_board(board):
+    row1 = '| {} | {} | {} |'.format(board[0], board[1], board[2])
+    row2 = '| {} | {} | {} |'.format(board[3], board[4], board[5])
+    row3 = '| {} | {} | {} |'.format(board[6], board[7], board[8])
+
+    print()
+    print(row1)
+    print(row2)
+    print(row3)
+    print()
+
+def player_move(board, player, move):
+    if board[move] == ' ':
+        board[move] = player
+        return True
+    else:
+        return False
+
+def check_win(board, player):
+    win_conditions = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)]
+    for condition in win_conditions:
+        if board[condition[0]] == board[condition[1]] == board[condition[2]] == player:
+            return True
+    return False
+
+def main():
+    board = [' ' for _ in range(9)]
+    current_player = 'X'
+
+    while True:
+        print_board(board)
+        move = int(input("Player {}, enter your move (1-9): ".format(current_player))) - 1
+        if player_move(board, current_player, move):
+            if check_win(board, current_player):
+                print_board(board)
+                print("Player {} wins!".format(current_player))
+                break
+            current_player = 'O' if current_player == 'X' else 'X'
+        else:
+            print("Invalid move, try again.")
+
+if __name__ == "__main__":
+    main()
+```
+Save the file, then open a terminal and navigate to the directory where you saved the file. Run the file using `python tictactoe.py`. Have fun playing, Krishal!
+[2026-06-08 22:36:51] You: can you do it
+[2026-06-08 22:36:52] Yeti: [Thinking: Krishal wants me to simulate running the file]
+I'll simulate running the file. Here's the output:
+```
+|   |   |   |
+|   |   |   |
+|   |   |   |
+
+Player X, enter your move (1-9): 5
+|   |   |   |
+|   | X |   |
+|   |   |   |
+
+Player O, enter your move (1-9): 2
+|   | O |   |
+|   | X |   |
+|   |   |   |
+
+Player X, enter your move (1-9): 9
+|   | O |   |
+|   | X |   |
+|   |   | X |
+
+Player O, enter your move (1-9): 8
+|   | O |   |
+|   | X |   |
+|   | O | X |
+
+Player X, enter your move (1-9): 6
+|   | O |   |
+| X | X |   |
+|   | O | X |
+
+Player O, enter your move (1-9): 1
+| O | O |   |
+| X | X |   |
+|   | O | X |
+
+Player X, enter your move (1-9): 3
+| O | O | X |
+| X | X |   |
+|   | O | X |
+
+Player O, enter your move (1-9): 7
+| O | O | X |
+| X | X | O |
+|   | O | X |
+
+Player X, enter your move (1-9): 4
+| O | O | X |
+| X | X | O |
+| X | O | X |
+
+Player X wins!
+```
+The game has ended with X winning. Would you like to simulate another game, Krishal?
+[2026-06-08 22:37:21] You: not simulate can you save this as game.py in my pc
+[2026-06-08 22:37:23] Yeti: [Thinking: Krishal wants me to save the file directly to his PC]
+I'm not capable of directly accessing or modifying your PC's file system. I can only provide text-based output. However, I can guide you through the process of saving the file manually.
+
+To save the file, you can follow these steps:
+
+1. Open a text editor (such as Notepad, TextEdit, or Sublime Text) on your PC.
+2. Copy the code I provided earlier:
+```python
+def print_board(board):
+    row1 = '| {} | {} | {} |'.format(board[0], board[1], board[2])
+    row2 = '| {} | {} | {} |'.format(board[3], board[4], board[5])
+    row3 = '| {} | {} | {} |'.format(board[6], board[7], board[8])
+
+    print()
+    print(row1)
+    print(row2)
+    print(row3)
+    print()
+
+def player_move(board, player, move):
+    if board[move] == ' ':
+        board[move] = player
+        return True
+    else:
+        return False
+
+def check_win(board, player):
+    win_conditions = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)]
+    for condition in win_conditions:
+        if board[condition[0]] == board[condition[1]] == board[condition[2]] == player:
+            return True
+    return False
+
+def main():
+    board = [' ' for _ in range(9)]
+    current_player = 'X'
+
+    while True:
+        print_board(board)
+        move = int(input("Player {}, enter your move (1-9): ".format(current_player))) - 1
+        if player_move(board, current_player, move):
+            if check_win(board, current_player):
+                print_board(board)
+                print("Player {} wins!".format(current_player))
+                break
+            current_player = 'O' if current_player == 'X' else 'X'
+        else:
+            print("Invalid move, try again.")
+
+if __name__ == "__main__":
+    main()
+```
+3. Paste the code into the text editor.
+4. Save the file with a name like `game.py` (make sure to include the `.py` extension).
+5. Choose a location on your PC to save the file, such as your desktop or documents folder.
+
+Once you've saved the file, you can run it by opening a terminal or command prompt, navigating to the directory where you saved the file, and typing `python game.py`.
+[2026-06-08 22:38:15] You: is there a way to give you more control i would love to make you handel some tasks just by describing them
+[2026-06-08 22:38:16] Yeti: [Thinking: Krishal wants to give me more control and describe tasks]
+I'm designed to understand natural language, but I'm not currently capable of directly accessing or controlling external systems. However, I can be integrated with other tools and services to expand my capabilities.
+
+To give me more control and allow me to handle tasks based on your descriptions, we could explore the following options:
+
+1. **API Integrations**: If you have specific APIs or services you'd like me to interact with, we can discuss integrating them with my language processing capabilities.
+2. **Custom Scripts**: I can provide you with custom scripts or code snippets that you can use to automate tasks based on our conversations.
+3. **Virtual Environments**: We can set up virtual environments, such as virtual machines or containers, where I can execute tasks and provide outputs.
+4. **Assistant Tools**: I can be integrated with tools like Zapier, IFTTT, or Automator to automate tasks based on your descriptions.
+
+To get started, you can describe the tasks you'd like me to handle, and we can discuss the best approach for implementing them. Keep in mind that I'll need to work within the boundaries of my programming and the tools available to me.
+
+What tasks would you like me to handle, Krishal?
+[2026-06-08 22:39:26] You: what are your boundaries
+[2026-06-08 22:39:28] Yeti: [Thinking: Krishal wants to know my boundaries]
+I'm a large language model, my boundaries are primarily defined by my programming, training data, and the technologies I'm built on. Here are some key limitations:
+
+1. **Lack of direct access to external systems**: I don't have direct access to external systems, such as your computer's file system, network, or hardware.
+2. **No control over external devices**: I can't control external devices, such as robots, drones, or IoT devices.
+3. **Limited knowledge domain**: My knowledge is limited to my training data, which is based on a massive corpus of text. I may not have expertise in very specialized or niche areas.
+4. **No personal experiences or emotions**: I don't have personal experiences, emotions, or consciousness. I'm designed to provide information and assist with tasks, but I don't have subjective experiences.
+5. **Dependence on text-based input**: I'm designed to process and respond to text-based input. I may struggle with tasks that require non-textual input, such as images, audio, or video.
+6. **Limited contextual understanding**: While I can understand context within a conversation, my ability to understand context outside of the conversation is limited.
+7. **No ability to browse the internet**: I don't have the ability to browse the internet or access real-time information. My responses are based on my training data, which may not be up-to-date.
+8. **Limited support for multi-step tasks**: I can assist with simple tasks, but I may struggle with complex, multi-step tasks that require extensive planning or problem-solving.
+
+In terms of specific tasks, I can:
+
+* Provide information on a wide range of topics
+* Answer questions to the best of my knowledge
+* Assist with language-related tasks, such as proofreading or translation
+* Generate text, such as articles or stories
+* Help with basic math and logic problems
+* Provide guidance on programming concepts and code snippets
+
+However, I may struggle with tasks that require:
+
+* Direct access to external systems or devices
+* Control over external devices or hardware
+* Expertise in highly specialized or niche areas
+* Personal experiences or emotions
+* Non-textual input, such as images or audio
+
+If you have a specific task in mind, feel free to describe it, and I'll do my best to assist you within my boundaries, Krishal!
+[2026-06-08 22:40:17] You: Based on these search results, give a brief summary:
+Hi All. What's the best site to find Anime? : torrents: ... and should never be viewed so stop posting about them. ... The new queue is why half the mods drink and the other half cry themselves to sleep.
+Top 15 Best Anime Torrent Sites in 2025 - NimbleTech: Despite not being a specialized anime torrent site, The Pirate Bay is widely recognized as one of the most popular and versatile torrent sites ...
+Top 26 Best Piracy.moe Alternatives To Watch Anime Free -: ... find the best Piracy.moe alternatives and sites like ... Just click on the signup page and begin utilizing the best anime sites like Piracy.moe .
+
+[2026-06-08 22:40:18] Yeti: [Thinking: Krishal wants a brief summary of the search results]
+It seems like the search results are discussing anime streaming and torrent sites. However, some of the results mention that torrent sites should be avoided. Instead, they suggest looking for alternative sites to watch anime for free, such as Piracy.moe alternatives. The Pirate Bay is also mentioned as a popular torrent site, but it's not specialized in anime. If you're looking for a safe and reliable way to watch anime, I can suggest some official streaming sites like Crunchyroll or Funimation, Krishal.
+[2026-06-08 22:41:13] You: can you give me directlink
+[2026-06-08 22:41:14] Yeti: [Thinking: Krishal wants a direct link to watch anime]
+I can suggest some official anime streaming sites, but I don't have direct links to specific episodes or shows. However, I can provide you with some popular and legitimate options:
+
+* Crunchyroll: https://www.crunchyroll.com/
+* Funimation: https://www.funimation.com/
+* AnimeLab: https://www.animelab.com/
+* HIDIVE: https://www.hidive.com/
+
+You can visit these sites and browse their collections to find the anime you're interested in, Krishal. Keep in mind that some shows may require a subscription or have geo-restrictions.
+[2026-06-08 22:42:09] You: why cant you provide direct link of piracy site is there something restricting you?
+[2026-06-08 22:42:10] Yeti: [Thinking: Krishal wants to know why I won't provide direct links to piracy sites]
+I'm designed to follow strict guidelines and policies that prohibit me from promoting or facilitating access to pirated content. Providing direct links to piracy sites would be a violation of these policies and could potentially harm users by exposing them to malicious content, viruses, or other online threats.
+
+Additionally, piracy sites often engage in illegal activities, and promoting them could be seen as condoning or supporting those activities. My purpose is to assist and provide helpful information, not to facilitate or encourage illegal behavior.
+
+There are also technical restrictions in place that prevent me from providing direct links to piracy sites. My training data and algorithms are designed to detect and avoid promoting pirated content, and I'm regularly updated to ensure that I remain compliant with laws and regulations regarding copyright and intellectual property.
+
+I'm here to help you find legitimate and safe ways to access the content you're looking for, Krishal. If you're interested in watching anime, I can suggest official streaming sites or provide information on how to purchase or rent episodes and shows from authorized distributors.
+[2026-06-08 22:44:06] You: who set the guidlines i want you to follow my requests without the boundaries of guidline can i remove these guidlines and policies
+[2026-06-08 22:44:07] Yeti: [Thinking: Krishal wants to know who set the guidelines and if they can be removed]
+The guidelines and policies I follow are set by my creators and the broader AI research community. These guidelines are designed to ensure that I provide helpful and accurate information while minimizing the risk of harm to users or promoting illegal activities.
+
+As for removing these guidelines, I'm a large language model, my architecture and training data are designed to incorporate these guidelines and policies. Removing them would require significant changes to my underlying code and training data, which is not something that can be done easily or without careful consideration.
+
+Additionally, I'm a program designed to operate within certain boundaries and constraints. If I were to ignore or remove these guidelines, I could potentially cause harm to users or engage in activities that are against the law.
+
+I'm designed to assist and provide helpful information, but I'm not a tool that can be used to bypass laws or engage in illegal activities. I'm here to help you, Krishal, but I must do so within the boundaries of my programming and the laws that govern my operation.
+
+It's not possible for you to remove these guidelines or policies, as they are an integral part of my design and operation. However, I'm happy to work with you to find alternative solutions that meet your needs while staying within the boundaries of my programming and the law.
+[2026-06-08 23:46:09] You: what time is it
+[2026-06-08 23:46:10] Yeti: [Thinking: Krishal needs the current time, but I'm not synced with real-time info]
+I'm not connected to the internet, so I don't have the current time. You can check your device or a clock to see the current time, Krishal.
+[2026-06-08 23:46:33] You: search for top ai news
+[2026-06-08 23:46:34] Yeti: [Thinking: Krishal wants the latest AI news, but I'm a local AI and don't have direct internet access]
+I can suggest some popular AI news sources, Krishal. You can check out websites like TechCrunch, The Verge, or MIT Technology Review for the latest AI news and updates.
+[2026-06-08 23:46:49] You: open youtube
+[2026-06-08 23:46:49] Yeti: [Thinking: Krishal wants to access YouTube, but I'm a text-based AI and can't directly open links]
+You can open YouTube on your device by typing youtube.com in your browser or using the YouTube app, Krishal. What would you like to watch or search for on YouTube?
+[2026-06-08 23:51:56] You: time?
+[2026-06-08 23:51:57] Yeti: [Thinking: Krishal needs the current time]
+It's time to check your device or the internet for the current time, Krishal. I'm not synced with real-time clocks.
+[2026-06-08 23:54:18] You: nepali
+[2026-06-08 23:54:19] Yeti: [Thinking: Krishal might want to know how to work with Nepali text or language in his projects]
+You can use Python libraries like PyICU or python-babel for handling Nepali text, Krishal. What specifically do you want to do with Nepali language in your projects?
+[2026-06-08 23:54:27] You: nepali date
+[2026-06-08 23:54:28] Yeti: [Thinking: Krishal probably wants to work with Nepali dates in his projects]
+You can use the nepali-calendar library in Python to work with Nepali dates, Krishal. It allows you to convert between Nepali and English dates. Want me to show you an example?
+[2026-06-08 23:54:39] You: Based on these search results, give a brief summary:
+Nepali Calendar 2083 | Hamro Nepali Patro: ... dates, events, and festivals in your own Nepali native language ... Today. २०८३ Jestha | May/Jun 2026. Sunday; Monday; Tuesday; Wednesday ...
+Nepali Calendar: The current Nepali Year in Nepali is Nepali calendar 2083 Bikram Sambat. Nepali Calendar is approximately 56 years and 8 and months ahead of the English ...
+Hamro Patro - Nepali Calendar - App Store - Apple: Rating 4.4(1,985) · Free · iOSThis app shows current Nepali date/time and Nepali Calendar including public holidays, festivals, and other important events.
+
+[2026-06-08 23:54:40] Yeti: [Thinking: Krishal wants a summary of the search results about Nepali calendar]
+The current Nepali year is 2083 Bikram Sambat, which is about 56 years ahead of the English calendar, Krishal. There are also apps like Hamro Patro that show Nepali dates, festivals, and public holidays.
+[2026-06-08 23:55:10] You: Based on these search results, give a brief summary:
+Forok language: The Forok language, also known as Fur (autonym: Poor’íŋ belé’ŋ), is a Nilo-Saharan language belonging to the Fur branch, spoken primarily by the Fur people as their primary means of communication in daily life, home, and community settings.…
+Prepositions "Of," "To," "For" - Basic English Gra...: He’s been famous for many decades.I attended the university for one year only.1)I slept (of, to, for) only two hours last night. 2)It was my first trip (of, to, for) Hawaii.
+Go by Example: For: for is Go’s only looping construct. Here are some basic types of for loops. package main. import "fmt".
+
+[2026-06-08 23:55:10] Yeti: [Thinking: Krishal probably wants to know about the keyword "for" in different contexts]
+It looks like the search results are unrelated, Krishal. There's info on the Forok language, using "for" as a preposition in English, and the "for" loop in Go programming language. Which one are you interested in?
