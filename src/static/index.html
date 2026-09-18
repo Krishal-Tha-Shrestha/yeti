@@ -65,6 +65,15 @@ body{background:var(--bg);font-family:var(--font);color:var(--text);display:flex
 .status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent3);box-shadow:0 0 8px var(--accent3);animation:pulse 2s infinite}
 .topbar-name{font-weight:600;font-size:0.9rem}
 .topbar-model{font-family:var(--mono);font-size:0.65rem;color:var(--muted);background:var(--glass);border:1px solid var(--glass-border);padding:0.2rem 0.6rem;border-radius:4px}
+/* Brain toggle buttons */
+.brain-toggle{display:inline-flex;gap:0.4rem;margin-left:0.6rem}
+.brain-btn{background:var(--glass);border:1px solid var(--glass-border);color:var(--muted);padding:0.2rem 0.6rem;border-radius:8px;font-size:0.82rem;display:inline-flex;align-items:center;gap:0.45rem;cursor:pointer}
+.brain-btn.small{font-size:0.78rem}
+.brain-btn[disabled]{opacity:0.35;cursor:not-allowed}
+.brain-btn.active{background:linear-gradient(135deg,#7c3aed,#2563eb);color:white;border-color:transparent;box-shadow:0 6px 18px rgba(39,30,120,0.35)}
+.brain-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-left:0.4rem}
+#dot-local{background:gray}
+#dot-cloud{background:gray}
 .topbar-right{display:flex;gap:0.5rem}
 .icon-btn{width:32px;height:32px;border-radius:7px;border:1px solid var(--glass-border);background:var(--glass);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.85rem;transition:all 0.2s}
 .icon-btn:hover{background:var(--glass-hover);color:var(--text)}
@@ -206,7 +215,11 @@ body{background:var(--bg);font-family:var(--font);color:var(--text);display:flex
       <div class="topbar-left">
         <div class="status-dot"></div>
         <span class="topbar-name">Yeti</span>
-        <span class="topbar-model">llama-3.3-70b</span>
+        <span class="topbar-model">qwen3:4b</span>
+        <div class="brain-toggle" aria-hidden="false">
+          <button id="brain-local" class="brain-btn" onclick="switchBrain('ollama')">🏔️ Local <span class="brain-dot small" id="dot-local"></span></button>
+          <button id="brain-cloud" class="brain-btn" onclick="switchBrain('gemini')">✨ Cloud <span class="brain-dot small" id="dot-cloud"></span></button>
+        </div>
       </div>
       <div class="topbar-right">
         <button class="icon-btn" title="Clear chat" onclick="clearChat()">⊘</button>
@@ -414,6 +427,83 @@ document.addEventListener('click', e => {
     sidebar.classList.remove('open');
   }
 });
+
+// Brain switcher: fetch /status on load and allow switching
+async function fetchStatus(){
+  try{
+    const res = await fetch('/status');
+    if(!res.ok) throw new Error('status error');
+    const st = await res.json();
+    updateBrainUI(st);
+  }catch(e){
+    console.error('Failed to fetch brain status', e);
+    // mark Ollama as offline
+    updateBrainUI({brain:'gemini', model:'unknown', ollama_available:false});
+  }
+}
+
+function updateBrainUI(st){
+  const dotLocal = document.getElementById('dot-local');
+  const dotCloud = document.getElementById('dot-cloud');
+  const btnLocal = document.getElementById('brain-local');
+  const btnCloud = document.getElementById('brain-cloud');
+  // Ollama availability
+  if(st.ollama_available){
+    dotLocal.style.background = 'var(--accent3)';
+    btnLocal.removeAttribute('disabled');
+    btnLocal.title = 'Use Ollama (local)';
+  } else {
+    dotLocal.style.background = 'gray';
+    btnLocal.setAttribute('disabled','true');
+    btnLocal.title = 'Ollama offline';
+  }
+  // Gemini always available as a cloud option (if API key set)
+  dotCloud.style.background = 'var(--accent2)';
+  btnCloud.removeAttribute('disabled');
+  btnCloud.title = 'Use Gemini (cloud)';
+
+  // Active brain indicator: highlight active button
+  btnLocal.classList.remove('active');
+  btnCloud.classList.remove('active');
+  if(st.brain === 'ollama'){
+    btnLocal.classList.add('active');
+    dotLocal.style.boxShadow = '0 0 8px var(--accent3)';
+    dotCloud.style.boxShadow = 'none';
+  } else {
+    btnCloud.classList.add('active');
+    dotCloud.style.boxShadow = '0 0 8px var(--accent2)';
+    dotLocal.style.boxShadow = 'none';
+  }
+
+  // Update model badge text
+  const modelBadge = document.querySelector('.topbar-model');
+  if(modelBadge && st.model){
+    modelBadge.textContent = st.model;
+  }
+}
+
+async function switchBrain(target){
+  try{
+    // Optimistic UI: disable buttons briefly
+    document.getElementById('brain-local').disabled = true;
+    document.getElementById('brain-cloud').disabled = true;
+    const res = await fetch('/switch-brain', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({brain:target})
+    });
+    const j = await res.json();
+    if(!j.ok){
+      alert('Failed to switch brain: ' + (j.error||'unknown'));
+    }
+    await fetchStatus();
+  }catch(e){
+    alert('Error switching brain: ' + e.message);
+  } finally{
+    document.getElementById('brain-local').disabled = false;
+    document.getElementById('brain-cloud').disabled = false;
+  }
+}
+
+fetchStatus();
 
 chatInput.focus();
 </script>
