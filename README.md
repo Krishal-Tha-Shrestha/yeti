@@ -1,2 +1,0 @@
-# yeti
-Personal AI assistant
